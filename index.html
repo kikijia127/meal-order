@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -95,7 +96,7 @@
             // 系統狀態
             const [isSubmitting, setIsSubmitting] = useState(false);
             const [submitStatus, setSubmitStatus] = useState(null); 
-            const [lastSummary, setLastSummary] = useState(null); 
+            const [lastSummary, setLastSummary] = useState(null); // 儲存送出後的明細供成功畫面顯示
             
             // 訂單狀態初始化
             const [orders, setOrders] = useState(MENU_ITEMS.map(item => ({ 
@@ -167,11 +168,11 @@
                 };
 
                 // 儲存明細用於成功畫面顯示的「電子收據」
-                setLastSummary({ 
+                setLastSummary({
                     orders: JSON.parse(JSON.stringify(activeOrders)),
                     userInfo: { ...userInfo },
                     timestamp: payload.timestamp,
-                    total: totalPrice 
+                    total: totalPrice
                 });
 
                 try {
@@ -194,7 +195,7 @@
                 }
             };
 
-            // --- 成功畫面渲染 ---
+            // --- 成功畫面渲染 (含訂餐明細表單) ---
             if (submitStatus === 'success' && lastSummary) {
                 return (
                     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-10">
@@ -204,7 +205,7 @@
                                     <Icon name="CheckCircle2" size={48} />
                                 </div>
                                 <h2 className="text-2xl font-black text-slate-800">訂購完成！</h2>
-                                <p className="text-slate-500 mt-2 text-sm font-bold">資料已成功傳送，您的訂單明細如下：</p>
+                                <p className="text-slate-500 mt-2 text-sm font-bold">資料已成功傳送，請截圖保存下方訂單明細：</p>
                             </div>
                             
                             {/* 產生精美明細收據 */}
@@ -370,7 +371,7 @@
                             ))}
                         </div>
 
-                        {/* 區塊 3：送出前的訂單預覽 */}
+                        {/* 區塊 3：送出前的餐點確認 */}
                         {activeOrders.length > 0 && (
                             <div className="bg-white p-8 rounded-[2.5rem] shadow-sm space-y-5 border-2 border-blue-100 ring-4 ring-blue-50/50 relative overflow-hidden">
                                 <div className="absolute -right-4 -top-4 opacity-10 pointer-events-none">
